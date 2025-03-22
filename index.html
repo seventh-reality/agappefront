@@ -1,56 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="favicon.ico" />
-    <title>My Web AR Project</title>
-    <style type="text/css">
-      .zsiq_floatmain .santacap,
-      .zsiq_floatmain #titlediv {
-        display: none !important;
+<html>
+
+<head>
+  <title>Chat App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/lib/languages/python.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/a11y-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h1 style="color:white">Chat Bot</h1>
+    <div class="chat-box mt-3">
+      <!-- Chat messages will be added here dynamically -->
+    </div>
+    <div class="form-group mt-3">
+      <textarea class="form-control" rows="3" placeholder="Type your message here" id="message-input"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary" id="send-btn">Send</button>
+  </div>
+  <script>
+setInterval(highlightAll,1000);
+// Function to highlight code using highlight.js library
+function highlightAll() {
+  document.querySelectorAll("pre code").forEach(block => {
+    hljs.highlightBlock(block);
+  });
+}
+
+    const chatBox = document.querySelector(".chat-box");
+    const messageInput = document.querySelector("#message-input");
+    const sendBtn = document.querySelector("#send-btn");
+
+    function addMessage(message, isUserMessage) {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("mt-3", "p-3", "rounded");
+
+      if (isUserMessage) {
+        messageDiv.classList.add("user-message");
+
+      } else {
+        messageDiv.classList.add("bot-message");
       }
-      .zsiq_floatmain.zsiq_theme1 .zsiq_flt_rel {
-        width: 40px !important;
-        height: 40px !important;
+
+      messageDiv.innerHTML = `
+        <img src="{{ url_for('static', filename='images/user.png') }}" class="user-icon"><p>${message}</p>
+        `;
+
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+
+
+
+    function sendMessage() {
+      const message = messageInput.value.trim();
+
+      if (message !== "") {
+        addMessage(message, true);
+
+        fetch("/api", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message })
+        })
+          .then(response => response.json())
+          .then(data => {
+                      messageInput.value = "";
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("mt-3", "p-3", "rounded");
+            messageDiv.classList.add("bot-message");
+           
+            const content = data.content;
+            
+            // Check if the content has code block
+            const hasCodeBlock = content.includes("```");
+            if (hasCodeBlock) {
+              // If the content has code block, wrap it in a <pre><code> element
+              const codeContent = content.replace(/```([\s\S]+?)```/g, '</p><pre><code>$1</code></pre><p>');
+
+             
+              messageDiv.innerHTML = `<img src="{{ url_for('static', filename='images/gpt.jpg') }}" class="bot-icon"><p>${codeContent}</p>`
+             
+            }
+            else{
+              messageDiv.innerHTML = `<img src="{{ url_for('static', filename='images/gpt.jpg') }}" class="bot-icon"><p>${content}</p>`
+            }
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+          })
+          .catch(error => console.error(error));
       }
-      .zsiq_floatmain.zsiq_theme1 .siqico-chat:before {
-        font-size: 18px !important;
-        line-height: 39px !important;
+    }
+
+    
+    sendBtn.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keydown", event => {
+      if (event.keyCode === 13 && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
       }
-      .zsiq_floatmain.zsiq_theme1 {
-        width: 40px !important;
-        max-height: 40px !important;
-        right: 20px !important;
-      }
-    </style>
-    <script type="text/javascript" id="zsiqchat">
-      var $zoho = $zoho || {};
-      $zoho.salesiq = $zoho.salesiq || {
-        widgetcode:
-          "22d44bdb923316a6c02f8036e6adc29c0765e42e054297ae91732c6d6b58cf71",
-        values: {},
-        ready: function() {},
-      };
-      var d = document;
-      var s = d.createElement("script");
-      s.type = "text/javascript";
-      s.id = "zsiqscript";
-      s.defer = true;
-      s.src = "https://salesiq.zoho.in/widget";
-      var t = d.getElementsByTagName("script")[0];
-      t.parentNode.insertBefore(s, t);
-    </script>
-  </head>
-  <body id="vrBody">
-    <noscript>
-      <strong>
-        We're sorry, but My Web AR Project doesn't work properly without
-        JavaScript enabled. Please enable it to continue.
-      </strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- Vue.js App Content Will Be Injected Here -->
-  </body>
+    });
+  </script>
+</body>
+
 </html>

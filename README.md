@@ -1,57 +1,44 @@
-# VR Agappe Products Showcase
+# Chat-Bot-using-gpt-3.5-turbo
+build a chatbot using the OpenAI's Chat GPT API "gpt-3.5-turbo" and Flasks Server. 
 
-## Project setup
-```
-npm i
-```
+## Requirements
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build:production
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-## Release Process 🏗
-
-- Once all features/bugfixes are deployed on `dev`, create a PR from `dev` to `test`
-- Once the PR is merged from `dev` -> `test`, run `npm run release` & ship.js will trigger a build with updated [CHANGELOG](./CHANGELOG.md) & proper [git tags](https://github.com/SaintGenesis/agappe-products-showcase-frontend/tags)
-- Follow the guide from the automated PR from Ship.js
-- Once you **Squash & Merge** the automated PR, wait for the [Ship.js trigger](https://github.com/SaintGenesis/agappe-products-showcase-frontend/actions/workflows/shipjs-trigger.yml) workflow to run successfully.
-- Rebase your `dev` with `test` to ensure the correct release is also displayed on `dev` env
-- Once the QA gives a sign off on `test` env, rebase `stage` with `test` to update the UAT environment
-
-## Branching Strategy 🎋
-
-- Create your feature branch from `dev` branch, eg. `feat/add-web-worker-JIRA-123`
-- Create a new PR from `feat/add-web-worker-JIRA-123` to `dev`
-- Once the PR is merged into `dev`, create a new PR from `dev` to `test`
-- Once the PR is merged into `test`, rebase `dev` with `test`, eg. `git fetch --all && git checkout dev && git rebase origin/test && git push`
-- Checkout on `test` & then run a new ship.js release workflow by running `npm run release:prepare` (Ensure you have a valid GitHub PAT in .env [GITHUB_TOKEN=PAT])
-- Ship.js will automatically update the [CHANGELOG](./CHANGELOG.md) & once you review and **Sqaush Merge** the PR
-- Inform on Teams about the new release so that QA team can test on the newer version
-- Once the QA passes all the tests, rebase the `stage` branch with `test`
-- Once the PR is merged, you **HAVE** to rebase `dev` & all your other branches/PRs which haven't gone in the previous release.
-
-```bash
-$ git fetch --all && git checkout dev && git rebase origin/test && git push
-```
-Once ship.js automatically prepares the Pull Request, kindly merge it and rest is done automatically by GitHub action and is driven by `deployment.yml` file.
+1. Flask module to create a web server.
+2. OpenAI module to use it's API.
+3. OpenAI API key
 
 
+## Getting Started
 
-## Contributing ✍🏻
+To get started using this application, please follow the steps below:
 
-_Note_: Commits & PRs will be allowed only if the commit messages & PR titles follow a [conventional commits standard](https://www.conventionalcommits.org/en/v1.0.0), read more about it [here](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#type-enum)
+1. Install Python on your computer.
+2. Navigate to the directory where you have cloned this repository.
+3. Run the command `pip install -r requirements.txt` to install the necessary Python packages.
+4. Add your OpenAI API key to the `app.py` file. You can obtain an API key by signing up for OpenAI's API program.
+5. Run the command `python app.py` to start the application.
 
-Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a new branch from the default branch, add commits, and [open a pull request](https://github.com/SaintGenesis/agappe-products-showcase-frontend/compare)
+## Usage
 
-### Customize configuration for vue-cli
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Once the application is running, you can use it to generate text based on a prompt that you provide. Simply enter a prompt and the application will use OpenAI's API to generate a response. 
+
+## Contributions
+
+We welcome contributions to this repository. If you have any improvements or suggestions, please feel free to create a pull request.
+
+## License
+
+This repository is licensed under the MIT License. Please see the `LICENSE` file for more information.
+
+
+## Note: 
+i used chat gpt to generate all the code.
+for the front end side, you can write code as per your need to make it look different.
+
+
+## Demo
+
+Check out this demo video to see the chatbot in action:
+
+[![Demo video](https://img.youtube.com/vi/etTE-mjLiTw/0.jpg)](https://www.youtube.com/watch?v=etTE-mjLiTw)
+
